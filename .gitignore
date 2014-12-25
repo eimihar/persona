@@ -1,0 +1,4 @@
+packages
+vendor
+vendor/*
+env_config
