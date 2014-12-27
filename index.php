@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 $exedra	= new \Exedra\Exedra(__DIR__);
 $app = $exedra->build("app",function($app)
 {
-
 	$app->setExecutionFailRoute("general-error");
 
 	## register eloquent entities;
@@ -48,18 +47,23 @@ $app = $exedra->build("app",function($app)
 
 			return $exe->execute("@public.error", ["message"=>$message]);
 		}),
-		"backend"=>["config"=>$config,"uri"=>"dashboard","subapp"=>"backend","bind:middleware"=>function($exe){
+		"backend"=>[
+			"config"=>$config,
+			"uri"=>"dashboard",
+			"subapp"=>"backend",
+			"bind:middleware"=>function($exe){
 			## not logged in.
 			if(!$exe->session->has("loggedin"))
 				return $exe->execute("@general-error", ["message"=>"Trying to execute some known route? well, check the routing out! ;)"]);
 
 			## eloquent. ;)
-			$exe->eloquentCapsule	= new \App\Model\Eloquent\Eloquent("localhost", $exe->config['dbUser'], $exe->config['dbPass'], $exe->config['dbName']);
+			$exe->eloquentCapsule	= new \App\Model\Eloquent\Eloquent("localhost", $exe->config->get('dbUser'), $exe->config->get('dbPass'), $exe->config->get('dbName'));
 			
 			$exe->setRoutePrefix("backend");
 
-			$exe->url->setBase($exe->config['baseUrl']);
-			$exe->url->setAsset($exe->config['assetUrl']);
+			$exe->url->setBase($exe->config->get('baseUrl'));
+			$exe->url->setAsset($exe->config->get('assetUrl'));
+			$exe->view->setDefaultData("exe", $exe);
 
 			$exe->layout	= $exe->view->create("template/default")->setRequired("content,title");
 			$exe->layout->set(["exe"=>$exe]);
@@ -82,20 +86,7 @@ $app = $exedra->build("app",function($app)
 			"error" => ["uri"=>false, "execute"=>"controller=main@error"],
 			"default"	=> ["uri"=>"[:controller]/[**:action]","execute"=>"controller={controller}@{action}"],
 			]],
-		"public"=>["config"=>$config,"bind:middleware"=>function($exe){
-			## eloquent. ;)
-			$exe->eloquentCapsule	= new \App\Model\Eloquent\Eloquent("localhost", $exe->config['dbUser'], $exe->config['dbPass'], $exe->config['dbName']);
-
-			## will basically base the route name on this, instead of the current parent route name.
-			$exe->setRoutePrefix("public");
-			$exe->url->setBase($exe->config['baseUrl']);
-			$exe->url->setAsset($exe->config['assetUrl']);
-
-			$exe->layout	= $exe->view->create("template/default")->setRequired('content');
-			$exe->layout->set("url",$exe->url)->set("session",$exe->session);
-
-			return $exe->next($exe);
-		},"subroute"=>[
+		"public"=>["config"=>$config,"bind:middleware"=>"middleware=public","subroute"=>[
 			"error"	=>["uri"=>"404","execute"=>"controller=error@general"],
 			"project"	=>["uri"=>"project","subroute"=>[
 				"index"	=>["uri"=>"","execute"=>"controller=project@index"],

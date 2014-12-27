@@ -28,7 +28,7 @@ class ControllerProject
 				return $this->exe->redirect->flash($error)->flash("error", "Are some souls supposed to be empty?")->refresh();
 			}
 
-			$project = new Project($input);
+			$project = new project\project($input);
 			$project->save();
 
 			return $this->exe->redirect->flash("success", "New project has been added.")->to("default",["controller"=>"project", "action"=>"index"]);
@@ -75,7 +75,7 @@ class ControllerProject
 		return $this->layout->render();
 	}
 
-	public function delete(Project $project)
+	public function delete(project\project $project)
 	{
 		$project->delete();
 
