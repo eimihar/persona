@@ -125,7 +125,7 @@ class Article extends \App\Model\Eloquent\Base
 			if($val == "")
 				continue;
 
-			$ref = new article_reference(['articleId'=> $this->id, 'value'=> $val]);
+			$ref = new \article\reference(['articleId'=> $this->id, 'value'=> $val]);
 			$ref->save();
 		}
 

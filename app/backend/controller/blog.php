@@ -177,7 +177,7 @@ class ControllerBlog
 			unset($input['tags']);
 			unset($input['references']);
 
-			$article = new Article($input);
+			$article = new article\article($input);
 			$article->save();
 
 			## tag and references
