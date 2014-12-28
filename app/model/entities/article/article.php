@@ -54,6 +54,11 @@ class Article extends \App\Model\Eloquent\Base
 		return parent::delete();
 	}
 
+	public function getSlugifiedTitle()
+	{
+		return str_replace(" ","-",strtolower($this->title));
+	}
+
 	public function getSimplifiedBody($limit = 40)
 	{
 		$body = strip_tags($this->body);

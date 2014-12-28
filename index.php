@@ -100,7 +100,8 @@ $app = $exedra->build("app",function($app)
 				]],
 			"blog"=>["uri"=>"blog","subroute"=>[
 				"index"		=>["uri"=>"","execute"=>"controller=blog@index"],
-				"view"		=>["uri"=>"[:blog-title]","execute"=>"controller=blog@view"]
+				"view"		=>["uri"=>"[:blog-title]","execute"=>"controller=blog@view"],
+				"facade"	=>["uri"=>"[:id]/[:blog-actual-title]", "execute"=> "controller=blog@facadeView"]
 				]],
 			"your-way"=>["uri"=>"give-up", "execute"=>function($exe)
 				{

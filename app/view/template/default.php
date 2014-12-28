@@ -2,9 +2,9 @@
   
   <head>
     <meta charset="utf-8">
-    <title>Singing Code, Gentling Wind</title>
+    <title><?php if(isset($title)): echo $title; else:?>Singing Code, Gentling Wind<?php endif;?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="<?php if(isset($description)): echo $description; else:?>Story of life, programming, of music et cetera.<?php endif;?>">
     <meta name="author" content="">
     <link href="<?php echo $url->asset("css/bootstrap.min.css");?>" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="<?php echo $url->asset("js/jquery.min.js");?>"></script>

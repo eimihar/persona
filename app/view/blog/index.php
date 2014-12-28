@@ -11,7 +11,7 @@
 <?php foreach($articles as $row):?>
 	<div class="row" id='da'>
 		<div class='col-sm-12'>
-			<h4><a style="color:#2c2c2c;" href='<?php echo $articleUrl = $url->create("blog.view",["blog-title"=>$row->id]);?>'><?php echo $row->title;?></a></h4>
+			<h4><a style="color:#2c2c2c;" href='<?php echo $articleUrl = $url->create("blog.facade",['id'=>$row->id, "blog-actual-title"=>$row->getSlugifiedTitle()]);?>'><?php echo $row->title;?></a></h4>
 			<div style="opacity:0.6;">In <?php echo $row->getCategory();?>, posted at <?php echo date("d F Y", strtotime($row->updated_at));?></div>
 			<p><?php echo $row->getSimplifiedBody(100);?> 
 			<a href='<?php echo $articleUrl;?>'>More</a></p>

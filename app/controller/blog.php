@@ -43,8 +43,17 @@ class ControllerBlog
 			return $this->exe->redirect->refresh();
 		}
 
+		$this->layout->set(['title'=> $article->title, 'description'=> $article->getSimplifiedBody(30)]);
 		$this->layout->set("content",$this->view->create("blog/view")->set($data));
 		return $this->exe->layout->render();	
+	}
+
+	// an alias.
+	public function facadeView()
+	{
+		
+
+		return $this->exe->execute('blog.view', ['blog-title'=>$this->exe->param('id')]);
 	}
 
 

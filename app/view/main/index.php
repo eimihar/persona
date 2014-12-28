@@ -14,7 +14,7 @@
 		<?php if($article = $row->getLatestArticle()):?>
 			<h4><?php echo $article->title;?></h4>
 			<p><?php echo $article->getSimplifiedBody();?></p>
-			<a class="btn btn-primary" href="<?php echo $url->create('blog.view',['blog-title'=>$article->id]);?>"><?php echo $row->caption;?></a>
+			<a class="btn btn-primary" href="<?php echo $url->create('blog.facade',['id'=>$article->id,'blog-actual-title'=>$article->getSlugifiedTitle()]);?>"><?php echo $row->caption;?></a>
 		<?php else:?>
 			<h4><?php echo $row->caption;?></h4>
 			<p><?php echo $row->description;?></p>
