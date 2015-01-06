@@ -65,7 +65,12 @@ $app = $exedra->build("app",function($app)
 			$exe->url->setAsset($exe->config->get('assetUrl'));
 			$exe->view->setDefaultData("exe", $exe);
 
-			$exe->layout	= $exe->view->create("template/default")->setRequired("content,title");
+			// use DI container to register dependency.
+			$exe->di->register('layout', function() use($exe)
+			{
+				return $exe->view->create("template/default")->setRequired("content,title");
+			});
+
 			$exe->layout->set(["exe"=>$exe]);
 
 			return $exe->next($exe);
