@@ -57,7 +57,7 @@ $table['project']	= array(
 	"slug"=>"varchar",
 	"date_start"=>"date",
 	"date_end"=>"date",
-	"description"=>"varchar",
+	"description"=>"text",
 	"timestamps"
 	);
 

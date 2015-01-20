@@ -13,7 +13,7 @@ $app = $exedra->build("app",function($app)
 	$config = json_decode(file_get_contents("env_config"), true);
 
 	$app->map->addRoute(Array(
-		"general-error"=>Array("any","error",function($exe)
+		"general-error"=>Array('method'=>"any", 'uri'=>"error", 'execute'=> function($exe)
 		{
 			$exe->response->setStatus(404);
 			$message	= "Unable to complete request.";
@@ -59,6 +59,8 @@ $app = $exedra->build("app",function($app)
 			## eloquent. ;)
 			$exe->eloquentCapsule	= new \App\Model\Eloquent\Eloquent("localhost", $exe->config->get('dbUser'), $exe->config->get('dbPass'), $exe->config->get('dbName'));
 			
+			echo $exe->app->file->load('storage', 'file.php')->getContent();
+
 			$exe->setRoutePrefix("backend");
 
 			$exe->url->setBase($exe->config->get('baseUrl'));
