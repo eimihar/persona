@@ -59,8 +59,6 @@ $app = $exedra->build("app",function($app)
 			## eloquent. ;)
 			$exe->eloquentCapsule	= new \App\Model\Eloquent\Eloquent("localhost", $exe->config->get('dbUser'), $exe->config->get('dbPass'), $exe->config->get('dbName'));
 			
-			echo $exe->app->file->load('storage', 'file.php')->getContent();
-
 			$exe->setRoutePrefix("backend");
 
 			$exe->url->setBase($exe->config->get('baseUrl'));
