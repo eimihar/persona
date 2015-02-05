@@ -126,7 +126,7 @@ if(isset($argv))
 	$exedra->load("console",["argv"=>$argv])->execute("console",[
 		"command"=>$argv,
 		"schemaBuilder"=>[
-			"schema"=>$app->loader->load("documents:schema.php"),
+			"schema"=>$app->loader->load(array('structure'=> 'documents', 'path'=>'schema.php')),
 			"connection"=>$eloquentCapsule->getConnection("default")]
 		]);
 }
