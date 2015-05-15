@@ -11,8 +11,15 @@ $app = $exedra->build("app",function($app)
 	$app->getExedra()->registerAutoload("App/Model/Entities");
 
 	$config = json_decode(file_get_contents("env_config"), true);
+	$app->config->set('env', $config);
 
-	$app->map->addRoute(Array(
+	$app->exeRegistry->addMiddleware(function($exe)
+	{
+		$exe->config->set('namespaced_builder', false);
+		return $exe->next($exe);
+	});
+
+	$app->map->addRoutes(Array(
 		"general-error"=>Array('method'=>"any", 'uri'=>"error", 'execute'=> function($exe)
 		{
 			$exe->response->setStatus(404);
@@ -88,6 +95,12 @@ $app = $exedra->build("app",function($app)
 
 				return $exe->controller->execute(["project",[$exe]],$exe->param("action"), [$project]);
 			}],
+			"story"	=>["uri"=>"story/[i:id]/[:action]","execute"=>function($exe)
+			{
+				$story = story\story::find($exe->param("id"));
+
+				return $exe->controller->execute(["blog",[$exe]], 'story'.ucwords($exe->param("action")), [$story]);
+			}],
 			"error" => ["uri"=>false, "execute"=>"controller=main@error"],
 			"default"	=> ["uri"=>"[:controller]/[**:action]","execute"=>"controller={controller}@{action}"],
 			]],
@@ -115,14 +128,15 @@ $app = $exedra->build("app",function($app)
 			]],
 		));
 
-		$app->map->addRoute(["test"=>["uri"=>"test","execute"=>function(){return "hello-world";}]]);
+		$app->map->addRoutes(["test"=>["uri"=>"test","execute"=>function(){return "hello-world";}]]);
 });
 
 ## if accessed by console, pass this argument to another apps, and execute.
 if(isset($argv))
 {
+	$config = $app->config->get('env');
 	$eloquent	= new \App\Model\Eloquent\Eloquent;
-	$eloquentCapsule	= $eloquent->setup();
+	$eloquentCapsule	= $eloquent->setup('localhost', $config['dbUser'], $config['dbPass'], $config['dbName']);
 	$exedra->load("console",["argv"=>$argv])->execute("console",[
 		"command"=>$argv,
 		"schemaBuilder"=>[
